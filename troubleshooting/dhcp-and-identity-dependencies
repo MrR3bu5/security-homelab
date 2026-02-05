@@ -1,1 +1,105 @@
+# DHCP, DNS, and Identity Dependencies
+
+## Overview
+During the initial Active Directory attack simulation phase of this lab,
+multiple attacks failed despite correct tooling, credentials, and network access.
+
+The root cause was not authentication or firewall policy, but unresolved
+dependencies between DHCP, DNS, and identity-based protocols.
+
+This document captures what broke, why it broke, and the lessons learned.
+
+---
+
+## The Problem
+Several identity-based operations (LDAP queries, Kerberos service ticket requests,
+and SPN enumeration) failed with misleading errors such as:
+
+- “Temporary failure in name resolution”
+- “UserDomain should be specified”
+- LDAP referral and bind errors
+- Kerberos tools failing despite valid credentials
+
+At the time, firewall rules, routing, and credentials were verified as correct.
+
+---
+
+## Root Cause Analysis
+
+### 1. Identity Systems Assume DNS First
+Active Directory is not IP-centric. Even when a Domain Controller is reachable
+by IP address, identity operations rely on DNS to:
+
+- Locate domain controllers
+- Resolve service principal names (SPNs)
+- Determine domain boundaries
+- Handle LDAP referrals correctly
+
+Without consistent DNS resolution, authentication may succeed while directory
+queries and Kerberos operations fail.
+
+---
+
+### 2. DHCP Is the Delivery Mechanism for Identity Context
+Clients depend on DHCP not just for IP addresses, but for:
+
+- DNS server assignment
+- Domain suffix search order
+- Consistent naming context
+
+In this lab, DHCP ranges existed, but DNS options were incomplete or misunderstood,
+leading to clients that were network-connected but identity-blind.
+
+---
+
+### 3. “Valid Credentials” ≠ “Usable Identity”
+LDAP authentication (`ldapwhoami`) succeeded, confirming credentials were valid.
+
+However:
+- Kerberos-based tooling (Impacket) still failed
+- SPN queries returned referrals or resolution errors
+
+This highlighted an important distinction:
+Authentication success does not guarantee directory or Kerberos functionality.
+
+---
+
+## What Fixed the Issue
+
+- Ensuring DHCP delivered correct DNS server information
+- Confirming domain suffixes were applied to clients
+- Using explicit domain context in tooling when ambiguity existed
+- Verifying name resolution before re-attempting identity-based attacks
+
+Once DNS and DHCP context were correct, attacks that previously failed succeeded
+immediately without further changes.
+
+---
+
+## Security Takeaways
+
+- Identity attacks fail quietly when prerequisites are missing
+- DNS misconfiguration can act as an accidental defensive control
+- Network segmentation alone does not prevent identity abuse
+- Logging and telemetry are required to understand *why* an attack fails
+
+---
+
+## Defensive Implications
+
+From a defensive perspective:
+- Broken DNS can reduce attack surface but also break visibility
+- Monitoring authentication failures without infrastructure context can mislead responders
+- Identity-aware detection requires healthy identity infrastructure
+
+---
+
+## Conclusion
+This troubleshooting exercise reinforced that identity security is not isolated
+to domain controllers or authentication protocols.
+
+It is deeply dependent on foundational services like DHCP and DNS, and failures
+in those layers can either mask attacks or prevent legitimate detection entirely.
+
+Understanding these dependencies is critical for both attackers and defenders.
 
