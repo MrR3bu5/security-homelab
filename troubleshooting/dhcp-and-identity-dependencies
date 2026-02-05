@@ -9,8 +9,6 @@ dependencies between DHCP, DNS, and identity-based protocols.
 
 This document captures what broke, why it broke, and the lessons learned.
 
----
-
 ## The Problem
 Several identity-based operations (LDAP queries, Kerberos service ticket requests,
 and SPN enumeration) failed with misleading errors such as:
@@ -22,7 +20,6 @@ and SPN enumeration) failed with misleading errors such as:
 
 At the time, firewall rules, routing, and credentials were verified as correct.
 
----
 
 ## Root Cause Analysis
 
@@ -38,7 +35,6 @@ by IP address, identity operations rely on DNS to:
 Without consistent DNS resolution, authentication may succeed while directory
 queries and Kerberos operations fail.
 
----
 
 ### 2. DHCP Is the Delivery Mechanism for Identity Context
 Clients depend on DHCP not just for IP addresses, but for:
@@ -50,7 +46,6 @@ Clients depend on DHCP not just for IP addresses, but for:
 In this lab, DHCP ranges existed, but DNS options were incomplete or misunderstood,
 leading to clients that were network-connected but identity-blind.
 
----
 
 ### 3. “Valid Credentials” ≠ “Usable Identity”
 LDAP authentication (`ldapwhoami`) succeeded, confirming credentials were valid.
@@ -62,7 +57,6 @@ However:
 This highlighted an important distinction:
 Authentication success does not guarantee directory or Kerberos functionality.
 
----
 
 ## What Fixed the Issue
 
@@ -74,7 +68,6 @@ Authentication success does not guarantee directory or Kerberos functionality.
 Once DNS and DHCP context were correct, attacks that previously failed succeeded
 immediately without further changes.
 
----
 
 ## Security Takeaways
 
@@ -83,7 +76,6 @@ immediately without further changes.
 - Network segmentation alone does not prevent identity abuse
 - Logging and telemetry are required to understand *why* an attack fails
 
----
 
 ## Defensive Implications
 
@@ -92,7 +84,6 @@ From a defensive perspective:
 - Monitoring authentication failures without infrastructure context can mislead responders
 - Identity-aware detection requires healthy identity infrastructure
 
----
 
 ## Conclusion
 This troubleshooting exercise reinforced that identity security is not isolated
