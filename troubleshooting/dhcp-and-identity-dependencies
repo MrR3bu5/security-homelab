@@ -102,4 +102,3 @@ It is deeply dependent on foundational services like DHCP and DNS, and failures
 in those layers can either mask attacks or prevent legitimate detection entirely.
 
 Understanding these dependencies is critical for both attackers and defenders.
-
