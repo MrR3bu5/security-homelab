@@ -1,4 +1,4 @@
-resource "proxmox_virtual_environment_vm" "lab_vm" {
+resource "proxmox_virtual_environment_vm" "lab_vm_cp1" {
   name      = var.vm_name
   node_name = var.pve_node
 
