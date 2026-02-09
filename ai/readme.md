@@ -1,6 +1,6 @@
-# Terraform (Moved)
+# AI (Moved)
 
 This folder has moved to: 
-https://github.com/MrRebu5/security-iac
+https://github.com/MrRebu5/security-ai-labs
 
-Reason: Infrastructure-as-Code is maintained separately for clarity and reuse.
+Reason: AI/security experimentation is tracked separately from core lab architecture.
