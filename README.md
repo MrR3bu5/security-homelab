@@ -1,87 +1,88 @@
-# Security Homelab – Automated Identity, Segmentation, and Detection
+# Security Homelab, Automated Identity, Segmentation, and Detection
 
-This repository documents the design, build, and evolution of a security-focused home lab intended to mirror **real-world enterprise security patterns**, not flat or tool-driven lab environments.
+This repository documents the design and evolution of a security focused home lab built to reflect enterprise security patterns instead of flat or tool driven environments.
 
-The lab is designed to explore how **identity systems, network segmentation, automation, and security telemetry** behave under realistic operational constraints — including when systems fail, controls are bypassed, or recovery must occur deliberately.
+The lab explores how identity, segmentation, automation, and security telemetry behave under operational pressure. Systems are deployed, tested, monitored, hardened, and rebuilt to validate detection and response workflows.
 
-This is not a static lab. It is a **living environment** built to be deployed, attacked, observed, hardened, and rebuilt.
+This is a living environment. The goal is continuous iteration through deployment, testing, observation, and recovery.
 
 ---
 
 ## Core Focus Areas
 
-- Identity-centric security (Active Directory as a control plane)
-- Enforced network segmentation and trust boundaries
+- Identity centric security with Active Directory as a control plane
+- Enforced network segmentation and defined trust boundaries
 - Infrastructure as Code and configuration automation
 - Observable security behavior through validated telemetry
-- Attack → Detect → Respond → Recover workflows
-- Documentation of *why* decisions were made, not just *how*
+- Attack, detect, respond, recover workflows
+- Documentation focused on decision making and tradeoffs
 
 ---
 
 ## Current State
 
 - Segmented network architecture with enforced trust boundaries
-- Routed firewall controlling east/west traffic between VLANs
-- Bastion (jump host) administrative access model
-- Active Directory (Windows Server 2022) with DNS
-- Domain-joined Windows client
-- Initial adversary simulation against Active Directory
-- Security-relevant logging validated at the source
+- Routed firewall controlling east west traffic between VLANs
+- Bastion host model for administrative access
+- Active Directory on Windows Server 2022 with integrated DNS
+- Domain joined Windows client systems
+- Initial adversary simulation against identity services
+- Security logging validated at the source
 - Manual build processes documented and repeatable
 
 ---
 
-## Near-Term Capstone Direction
+## Near Term Capstone Direction
 
-The lab is evolving into a **fully automated security capstone** that integrates:
+The lab is evolving into a fully automated security capstone that integrates:
 
-- **Infrastructure as Code**  
-  Reproducible deployment of virtual machines, networks, and access paths.
+### Infrastructure as Code
+Reproducible deployment of virtual machines, networks, and access paths through Terraform.
 
-- **Configuration & Security Automation**  
-  Baseline hardening, logging enforcement, and incident response actions executed programmatically.
+### Configuration and Security Automation
+Baseline hardening, logging enforcement, and response actions executed through automation.
 
-- **Containerized Workloads**  
-  Modern application targets deployed via containers to validate detection and response against realistic services.
+### Containerized Workloads
+Modern service targets deployed in containers to validate detection and response against realistic applications.
 
-- **AI-Assisted Security Analysis**  
-  Log summarization, alert enrichment, and investigative support to improve analyst efficiency — not replace decision-making.
+### AI Assisted Security Analysis
+Log summarization, alert enrichment, and investigative support designed to improve analyst efficiency while preserving human decision making.
 
-- **Recovery by Design**  
-  Compromised systems are intentionally rebuilt rather than “patched in place” to reinforce immutable infrastructure concepts.
+### Recovery by Design
+Compromised systems are rebuilt instead of patched in place to reinforce immutable infrastructure practices.
 
 ---
 
 ## Design Goals
 
-- No implicit trust between zones
-- Identity-aware security over perimeter-only controls
-- Observable behavior through logs, not assumptions
-- Automation over manual intervention where appropriate
-- Build → break → detect → respond → rebuild → document
+- No implicit trust between network zones
+- Identity aware security instead of perimeter only controls
+- Observable behavior through telemetry and logs
+- Automation used where it improves consistency and reliability
+- Build, break, detect, respond, rebuild, document
 
 ---
 
 ## Repository Structure
-- `architecture/`     – Network, identity, and access model design decisions
-- `ansible/`          – Configuration, hardening, and response automation
-- `ai/`               – AI-assisted analysis scripts and workflows
-- `attacks/`          – Adversary simulations performed against the lab
-- `build-notes/`      – Key implementation details and rationale
-- `detections/`       – Detection logic, telemetry validation, and analysis
-- `docker/`           – Containerized workloads and security testing targets
-- `terraform/`        – Infrastructure as Code definitions (in progress)
-- `troubleshooting/`  – Real issues encountered and how they were resolved
+
+- `architecture/`     Network, identity, and access model decisions  
+- `ansible/`          Configuration, hardening, and response automation (Moved to IaC Repo)
+- `ai/`               AI assisted analysis workflows (Moved to AI Repo)
+- `attacks/`          Adversary simulations performed against the lab  
+- `build-notes/`      Implementation details and design rationale  
+- `detections/`       Detection logic and telemetry validation  
+- `docker/`           Container workloads and testing targets
+- `terraform/`        Infrastructure as Code definitions (Moved to IaC Repo)
+- `troubleshooting/`  Issues encountered and documented resolutions  
 
 ---
 
 ## Guiding Principle
 
-This repository prioritizes **security thinking and decision-making** over tooling.
+This repository prioritizes security thinking and operational decision making over individual tools.
 
-Every configuration, attack, detection, and automation exists to answer a question:
-> *How does this system actually behave under pressure?*
+Each configuration, attack simulation, and detection exists to answer a single question:
 
-If something breaks, that failure is documented — not hidden — because understanding failure modes is part of building secure systems.
+> How does this system behave under real operational pressure?
 
+Failures are documented as part of the process. Understanding failure modes is essential to building resilient and defensible systems.
